@@ -12,4 +12,4 @@ Estimating pedestrian and vehicle traffic is tough - companies rich in the right
 
 The trick is, it's hard for anyone to provide complete spatial-temporal coverage everywhere around the globe.  In Miovision's case this is also true.  For instance, here is where data has been collected (as of this date) for NYC.
 
-![_config.yml]({{ site.baseurl }}/images/censored.png)
+![_config.yml]({{ site.baseurl }}/images/config.png)
