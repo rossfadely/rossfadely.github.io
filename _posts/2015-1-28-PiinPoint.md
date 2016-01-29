@@ -3,6 +3,7 @@ layout: post
 title: Estimating Traffic Density for PiinPoint
 ---
 
+# *** THIS IS BEING PUSHED ON THE FLY, AND NOT PUBLISHED OFFICIALLY IN ANY CAPACITY, ENJOY?!? ***
 
 Suppose you want to open a new store for your business, what kind of information might you want to know about the new location?  One key piece, perhaps, is how many cars and people will go by the store?  This is one small part of the *multitude of metrics* the analytics company [PiinPoint](https://www.piinpoint.com/) delivers to its customers.  However, it turns out that this is a tricky business and PiinPoint teamed up with [Insight](http://insightdatascience.com/) (and me) to see if we can dig deeper.
 
@@ -23,3 +24,9 @@ In addition, the above map doesn't paint the full picture.  For a given location
 The above plot shows three random sets of data for six different locations.  The top row shows pedestrian counts and the bottom shows light/medium vehicles (think cars, SUVs, trucks, and vans).  The light grey points show a hour's collection of counts, and the red points show the median for the bins in places with more than one measurement.
 
 So what does this mean for our PiinPoint team?  They have tasked us to **estimate the traffic at hours without any measurements, at locations with *at least some* data**.  You can imagine that this might be a tricky task.  Our goal is to improve on their models, and perhaps *extend the predictions to locations with NO data*!
+
+# First Cracks
+
+When deciding to take this consulting job on as my Insight project, I was initially intrigued.  What a great opportunity to run some Gaussian Processes with cool kernels (e.g., [these cats](http://arxiv.org/abs/1302.4245)) or perhaps some creative density estimation (e.g., my acquaintance Iain Murray and crew's [RNADE](http://arxiv.org/abs/1306.0186)). Alas, these methods rely on reasonable sampling of the space and after seeing the above views of the data, I switched my focus.
+
+Here at Insight (and as Data Scientists) we often want to *move fast*.  Which often translates to: start simple and build up.  A very simple and easy first step to this problem is K-Nearest Neighbors.  The idea is simple: for a given location, find the closest locations (by distance) to the location of interest and estimate the missing measurement (for a given hour) by taking a weighted mean of the K neighbors (where K is something like 1, 2, or 10).
