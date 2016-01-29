@@ -37,8 +37,22 @@ Turns out this didn't work so well.  The Root Mean Squred Error (RMSE), was not 
 
 Intuitively, the nearest neighbors to a location must relate in *some* way to the traffic density.  However, that relation might be somewhat complicated.  A second intuition is if you are trying to estimate traffic at a given hour (at a particular location), the hours before and after are STRONGLY correlated with it.  
 
-The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the distances to, and the traffic counts associated with, the neighbors as features $X$ to predict the actual traffic counts $Y$.  Train a good regression algorithm to improve the RMSE.
+The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the distances to, and the traffic counts associated with, the neighbors as features X to predict the actual traffic counts Y.  Train a good regression algorithm to improve the RMSE.
 
-Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs $X$ and the outcomes $Y$.  Specifically, I chose to try the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting).   Here is a look at the performance of these approaches on held-out test data.
+Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  Specifically, I chose to try the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting).   Here is a look at the performance of these approaches on held-out test data.
 
 ![_config.yml]({{ site.baseurl }}/images/rmse_hour.png)
+
+The above shows the RMSE on an hourly basis for four models.  Note the PiinPoint model is significantly worse in terms of error than all other models.
+
+Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think worklife versus nightlife).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
+
+The improvement was significant.  Examine in the above figure the difference between gbm (Gradient Boosting Model) and gbm_nocensus.  The model with Census data performs significantly better, particularly between the hours of 2 and 6.  These hours are times were we typically have less data, so the augmentation is helping exactly in the way we expected.  Below shows the global performance of our best model gbm versus the PiinPoint approach and gbm_nocensus.
+
+![_config.yml]({{ site.baseurl }}/images/rse.png)
+
+The above distributions show the Root Squared Error.  Notice our best model (gbm) significantly improves the distribution over the PiinPoint approach, and that adding Census data helps as well.
+
+# Wrap up
+
+I really enjoyed the chance to work with PiinPoint and improve the product they deliver to their customers.  Inded, knowing that these models (done in just a couple weeks) will be integrated into their company is very exciting. The project itself was also rewarding.  Since the data were relatively small and quite sparse, it was fun to explore different models and intuitions of what might work.  My initial thoughts of using more complex and powerful models had to disappear, and instead the dance was one of balance between the nature of the problem and models.  
