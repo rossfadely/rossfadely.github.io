@@ -22,4 +22,4 @@ In addition, the above map doesn't paint the full picture.  For a given location
 
 The above plot shows three random sets of data for six different locations.  The top row shows pedestrian counts and the bottom shows light/medium vehicles (think cars, SUVs, trucks, and vans).  The light grey points show a hour's collection of counts, and the red points show the median for the bins in places with more than one measurement.
 
- 
+So what does this mean for our PiinPoint team?  They have tasked us to **estimate the traffic at hours without any measurements, at locations with *at least some* data**.  You can imagine that this might be a tricky task.  Our goal is to improve on their models, and perhaps *extend the predictions to locations with NO data*!
