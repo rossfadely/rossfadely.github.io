@@ -21,9 +21,9 @@ In addition, the above map doesn't paint the full picture.  For a given location
 
 The above plot shows three random sets of data for six different locations.  The top row shows pedestrian counts and the bottom shows light/medium vehicles (think cars, SUVs, trucks, and vans).  As you can see, even at locations where there are data, it is far from complete.  Some locations do have very nice coverage (like the location on the lower left), while others are much more incomplete.  This is particularly true at the morning hours from midnight to 10 AM.
 
-So what does this mean for our PiinPoint team?  The goal:
+So what does this mean for our PiinPoint team?
 
-> At each location with at least one measurement, estimate the vehicle and pedestrian traffic for hours with no data.
+> *GOAL:* At each location with at least one measurement, estimate the vehicle and pedestrian traffic for hours with no data.
 
 You can imagine that this might be a tricky task given the heterogeneous nature of the data.  Nevertheless our goal is to improve on their models, as measured by the root mean squared error (RMSE) on held-out test data.
 
