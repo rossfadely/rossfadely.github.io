@@ -47,8 +47,8 @@ Tree-based methods are great for this task - they are fairly robust, and can bui
 
 Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think worklife versus nightlife).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
 
-Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the Google Geocode API and placed the road types into the following bins:
-<code>{hwy/rte, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</code>
+Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the Google Geocode API and placed the road types into the following bins:<br>
+<code><sub><sup>{hwy/rte, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</sup></sub></code>
 
 # Perfomance
 
