@@ -3,8 +3,6 @@ layout: post
 title: Estimating Traffic Density for PiinPoint
 ---
 
-# *** THIS IS BEING PUSHED ON THE FLY, AND NOT PUBLISHED OFFICIALLY IN ANY CAPACITY, ENJOY?!? ***
-
 Suppose you want to open a new store for your business, what kind of information might you want to know about the new location?  One key piece, perhaps, is how many cars and people will go by the store?  This is one small part of the *multitude of metrics* the analytics company [PiinPoint](https://www.piinpoint.com/) delivers to its customers.  However, it turns out that this is a tricky business and PiinPoint teamed up with [Insight](http://insightdatascience.com/) (and me) to see if we can dig deeper.
 
 # The Problem
@@ -13,7 +11,7 @@ Estimating pedestrian and vehicle traffic is tough - companies rich in the right
 
 The trick is, it's hard for anyone to provide complete spatial-temporal coverage everywhere around the globe.  In Miovision's case this is also true.  For instance, here is where data has been collected (as of this date) for NYC.
 
-![_config.yml]({{ site.baseurl }}/images/censored.png)
+![_config.yml]({{ site.baseurl }}/images/nyc_map.png)
 
 Whoa, interesting huh?  From first thought you might think that Miovision would want a uniform coverage of a given area, but that is not what they do!  The aim is to serve their customers who pay to know what's going on at *specific locations*.  
 
@@ -47,7 +45,7 @@ The above shows the RMSE on an hourly basis for four models.  Note the PiinPoint
 
 Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think worklife versus nightlife).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
 
-The improvement was significant.  Examine in the above figure the difference between gbm (Gradient Boosting Model) and gbm_nocensus.  The model with Census data performs significantly better, particularly between the hours of 2 and 6.  These hours are times were we typically have less data, so the augmentation is helping exactly in the way we expected.  Below shows the global performance of our best model gbm versus the PiinPoint approach and gbm_nocensus.
+The improvement was significant.  Examine in the above figure the difference between gbm (Gradient Boosting Model) and gbm without census data.  The model with Census data performs significantly better, particularly between the hours of 2 and 6.  These hours are times were we typically have less data, so the augmentation is helping exactly in the way we expected.  Below shows the global performance of our best model gbm versus the PiinPoint approach and gbm without census data.
 
 ![_config.yml]({{ site.baseurl }}/images/rse.png)
 
