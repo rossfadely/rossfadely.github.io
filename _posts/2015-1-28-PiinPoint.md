@@ -7,7 +7,7 @@ Suppose you want to open a new store for your business, what kind of information
 
 # The Problem
 
-Estimating pedestrian and vehicle traffic is tough - companies rich in the right data seldom give it out.  Moreover, even those who have it often don't have a complete picture.  To tackle this [PiinPoint](https://www.piinpoint.com) has teamed up with [Miovision](https://miovision.com/) a traffic company that does spot measurements of people and autos at various locations around the globe.
+Estimating pedestrian and vehicle traffic is tough - companies rich in the right data seldom give it out.  Moreover, even those who have it often don't have a complete picture.  To tackle this [PiinPoint](https://www.piinpoint.com) has teamed up with [Miovision](https://miovision.com/) a traffic data company that does spot measurements of people and autos at various locations around the globe.
 
 The trick is, it's hard for anyone to provide complete spatial-temporal coverage everywhere around the globe.  In Miovision's case this is also true.  For instance, here is where data has been collected (as of this date) for NYC.
 
@@ -23,11 +23,11 @@ The above plot shows three random sets of data for six different locations.  The
 
 So what does this mean for our PiinPoint team?
 
-> *GOAL:* At each location with at least one measurement, estimate the vehicle and pedestrian traffic for hours with no data.
+> *GOAL:* At each location, estimate the vehicle and pedestrian traffic for hours with no data.
 
 You can imagine that this might be a tricky task given the heterogeneous nature of the data.  Nevertheless our goal is to improve on their models, as measured by the root mean squared error (RMSE) on held-out test data.
 
-# First Cracks
+# First Attempts
 
 When deciding to take this consulting job on as my Insight project, I was initially intrigued.  What a great opportunity to run some Gaussian Processes with cool kernels (e.g., [these cats](http://arxiv.org/abs/1302.4245)) or perhaps some creative density estimation (e.g., my acquaintance Iain Murray and crew's [RNADE](http://arxiv.org/abs/1306.0186)). Alas, these methods rely on reasonable sampling of the space and after seeing the above views of the data, I switched my focus.
 
@@ -35,19 +35,22 @@ Here at Insight (and as Data Scientists) we often want to *move fast*.  Which of
 
 Turns out this didn't work so well.  The Root Mean Squred Error (RMSE), was not too much better than what PiinPoint is currently doing (think averaging by hour over a large spatial area).  As you can image the variation of traffic can be immense from place to place, even moreso for a dense city (like NYC).  Ultimately, this makes the K neighbors somewhat noisy estimators for the traffic counts.
 
-# Building the model
+# Building an initial model
 
 Intuitively, the nearest neighbors to a location must relate in *some* way to the traffic density.  However, that relation might be somewhat complicated.  A second intuition is if you are trying to estimate traffic at a given hour (at a particular location), the hours before and after are STRONGLY correlated with it.  
 
 The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the distances to, and the traffic counts associated with, the neighbors as features X to predict the actual traffic counts Y.  Train a good regression algorithm to improve the RMSE.
 
-Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  Specifically, I chose to try the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting).   Here is a look at the performance of these approaches on held-out test data.
+Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  Specifically, I chose to try the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting).  Taking this approach provided the biggest boost in performance of all the approaches I explored (see *Model Exploration* below).  For example, using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
 
-![_config.yml]({{ site.baseurl }}/images/rmse_hour.png)
-
-The above shows the RMSE on an hourly basis for four models.  Note the PiinPoint model is significantly worse in terms of error than all other models.
+# Further Improvemnts: Augmenting the data
 
 Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think worklife versus nightlife).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
+
+Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the Google Geocode API and placed the road types into the following bins:
+<code>{hwy/rte, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</code>
+
+# Perfomance
 
 The improvement was significant.  Examine in the above figure the difference between gbm (Gradient Boosting Model) and gbm without census data.  The model with Census data performs significantly better, particularly between the hours of 2 and 6.  These hours are times were we typically have less data, so the augmentation is helping exactly in the way we expected.  Below shows the global performance of our best model gbm versus the PiinPoint approach and gbm without census data.
 
