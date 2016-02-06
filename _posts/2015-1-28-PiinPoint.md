@@ -43,12 +43,14 @@ The idea is as follows. For a given location-hour pair, compute the K nearest ne
 
 Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  Specifically, I chose to try the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting).  Taking this approach provided the biggest boost in performance of all the approaches I explored (see *Model Exploration* below).  For example, using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
 
-# Further Improvemnts: Augmenting the data
+# Further Improvements: Augmenting the data
 
-Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think worklife versus nightlife).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
+Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think work-life versus night-life).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
 
-Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the Google Geocode API and placed the road types into the following bins:<br>
-<code><sub><sup>{hwy/rte, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</sup></sub></code>
+Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the [Google Geocode API](https://developers.google.com/maps/documentation/geocoding/intro) and placed the road types into the following bins:<br>
+<code><sub><sup>{highway/route, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</sup></sub></code>
+
+Finally, I wanted to try to inform the model about the nearby density of interesting places that might draw traffic.  For this information I turned to [Factual.com](https://factual.com/), who have data on the location and types of places near a given latitude and longitude.  The categories for places are broad at the high level, but sub-categories can be quite specific.  Due to API limits and time constraints I was limited to putting places
 
 # Perfomance
 
