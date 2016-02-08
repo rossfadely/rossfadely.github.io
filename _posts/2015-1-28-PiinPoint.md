@@ -71,10 +71,12 @@ Now armed with a more rich set of data, it was time to explore the space of mode
 
 The first set of models I considered were based on the [scikit-learn](http://scikit-learn.org/stable/) library, since they are stable, work well, and have a consistent API.  For basic comparision purposes I first considered a K nearest neighbors model only.  This performed fairly poorly (see table below), yielding just a 5\% improvement over PiinPoint's current model.
 
-Next, I considered the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) [Gradient Boosting](https://en.wikipedia.org/wiki/Random_forest).  For both of these, I varied the features and parameters put into the model and used cross-validation to determine the best model.  The table below highlights some of the models explored.
+Next, I considered the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Random_forest).  For both of these, I varied the features and parameters put into the model and used cross-validation to determine the best model.  The table below highlights some of the models explored.
 
 ![_config.yml]({{ site.baseurl }}/images/model_table.png)
+<sub><sup>C = Census data, S = Street type, and F = factual.com place data</sup></sub>
 
+In addition to the scikit-learn model library, I wanted to explore two other types of models which often perform well for estimation tasks like the one here.
 
 # Perfomance
 
