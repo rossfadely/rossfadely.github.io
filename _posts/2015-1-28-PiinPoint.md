@@ -45,17 +45,18 @@ Tree-based methods are great for this task - they are fairly robust, and can bui
 
 # Further Improvements: Augmenting the data
 
-Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think work-life versus night-life).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
+Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  The motivation for this is simple - the Miovision data is fairly sparse in both space (location) and time, so we want to provide our predictive model additional information to supplement the places were sparsity is the worst.
 
-Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the [Google Geocode API](https://developers.google.com/maps/documentation/geocoding/intro) and placed the road types into the following bins:<br>
+One obvious relevant data source is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think work-life versus night-life).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
+
+Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the [Google Geocode API](https://developers.google.com/maps/documentation/geocoding/intro) and placed the road types into the following bins:
+<br>
 <code><sub><sup>{highway/route, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</sup></sub></code>
 
 Finally, I wanted to try to inform the model about the nearby density of interesting places that might draw traffic.  For this information I turned to [Factual.com](https://factual.com/), who have data on the location and types of places near a given latitude and longitude.  The categories for places are broad at the high level, but sub-categories can be quite specific.  Due to API limits and time constraints I was limited to putting places into two bins.  The first one is more business/services-like places:
-
 <br>
 <code><sub><sup>{Automotive, Community/Government, Healthcare, Business/Services, Travel}</sup></sub></code>
 <br>
-
 The second is a bin for more recreation-like places:
 <br>
 <code><sub><sup>{Retail, Landmarks, Restaurants/Bars, Sports/Rec, Landmarks,
@@ -63,6 +64,17 @@ The second is a bin for more recreation-like places:
 <br>
 
 For both of these bins, I got counts from factual.com within 50, 150, and 300 meters from the location of interest.
+
+# Model Exploration
+
+Now armed with a more rich set of data, it was time to explore the space of models that would suit PiinPoint's problem.  The goal for this stage is to produce a model that performs well, but also one that is simple to implement for PiinPoint.  
+
+The first set of models I considered were based on the [scikit-learn](http://scikit-learn.org/stable/) library, since they are stable, work well, and have a consistent API.  For basic comparision purposes I first considered a K nearest neighbors model only.  This performed fairly poorly (see table below), yielding just a 5\% improvement over PiinPoint's current model.
+
+Next, I considered the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) [Gradient Boosting](https://en.wikipedia.org/wiki/Random_forest).  For both of these, I varied the features and parameters put into the model and used cross-validation to determine the best model.  The table below highlights some of the models explored.
+
+![_config.yml]({{ site.baseurl }}/images/model_table.png)
+
 
 # Perfomance
 
