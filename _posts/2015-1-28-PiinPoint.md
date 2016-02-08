@@ -90,7 +90,7 @@ This is a great result, but what does it mean (practically) for PiinPoint?  Have
 
 These histograms show the residuals (errors) from model predictions and the test data.  On the left are the residuals for the best vehicle model and PiinPoint's vehicle model.  Strikingly, the PiinPoint distribution has a lot of points where the errors are of order 1000 counts or greater.  Intuitively, this scale of error (+/- 1000) seems like it would be a big deal to there customers since this scale is 1) a large amount of traffic and 2) more than the typical variation seen at locations.  Now, PiinPoint will typically give there customers estimates that are off by a few hundred (or better) counts!
 
-
+The panel on the right of the figure shows the best vehicle model (which uses data from the census, street types, and factual) versus a model with the census information dropped.  As you can see, the effect of adding in Census (or other data) is more subtle and certainly not as dramatic as the left panel.  Given this, and the correspondingly smaller effect on RMSE, I recommended to PiinPoint to carefully consider whether it was worthwhile to add in these additional data sources - it might be better practically to keep things simpler and exclude some external data (at the cost of slightly worse error).
 
 # Wrap up
 
