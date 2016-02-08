@@ -69,7 +69,7 @@ For both of these bins, I got counts from factual.com within 50, 150, and 300 me
 
 Now armed with a more rich set of data, it was time to explore the space of models that would suit PiinPoint's problem.  The goal for this stage is to produce a model that performs well, but also one that is simple to implement for PiinPoint.  
 
-The first set of models I considered were based on the [scikit-learn](http://scikit-learn.org/stable/) library, since they are stable, work well, and have a consistent API.  For basic comparision purposes I first considered a K nearest neighbors model only.  This performed fairly poorly (see table below), yielding just a 5\% improvement over PiinPoint's current model.
+The first set of models I considered were based on the [scikit-learn](http://scikit-learn.org/stable/) library, since they are stable, work well, and have a consistent API.  For basic comparision purposes I first considered a K nearest neighbors model only.  This performed fairly poorly (see table below), yielding just a 5% improvement over PiinPoint's current model.
 
 Next, I considered the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Random_forest).  For both of these, I varied the features and parameters put into the model and used cross-validation to determine the best model.  The table below highlights some of the models explored.
 
@@ -81,11 +81,16 @@ Specifically I tried Bayesian Additive Regressive Trees (sampled with [Particle 
 
 # Results
 
-The improvement was significant.  Examine in the above figure the difference between gbm (Gradient Boosting Model) and gbm without census data.  The model with Census data performs significantly better, particularly between the hours of 2 and 6.  These hours are times were we typically have less data, so the augmentation is helping exactly in the way we expected.  Below shows the global performance of our best model gbm versus the PiinPoint approach and gbm without census data.
+Examining the above table it is clear that the gradient boosting model performed best on held out test data.  For pedestrians the model gave a RMSE of 334 (when combined with US Census data) and for vehicles the model yields a RMSE of 537.  More importantly these values are **~50%** the RMSE that PiinPoint's current model gives!
 
+> *DELIVERED:* A model that is TWICE as accurate than before!
+
+This is a great result, but what does it mean (practically) for PiinPoint?  Have a look at the below:   
 ![_config.yml]({{ site.baseurl }}/images/rse.png)
 
-The above distributions show the Root Squared Error.  Notice our best model (gbm) significantly improves the distribution over the PiinPoint approach, and that adding Census data helps as well.
+These histograms show the residuals (errors) from model predictions and the test data.  On the left are the residuals for the best vehicle model and PiinPoint's vehicle model.  Strikingly, the PiinPoint distribution has a lot of points where the errors are of order 1000 counts or greater.  Intuitively, this scale of error (+/- 1000) seems like it would be a big deal to there customers since this scale is 1) a large amount of traffic and 2) more than the typical variation seen at locations.  Now, PiinPoint will typically give there customers estimates that are off by a few hundred (or better) counts!
+
+
 
 # Wrap up
 
