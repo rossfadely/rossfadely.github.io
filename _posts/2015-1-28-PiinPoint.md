@@ -2,7 +2,6 @@
 layout: post
 title: Estimating Traffic Density for PiinPoint
 ---
-[(Presentation Slides Live Here)](https://drive.google.com/file/d/0ByuUyv0trCU1Y3FGcU1FOVh4MGs/view?usp=sharing)
 
 Suppose you want to open a new store for your business, what kind of information might you want to know about the new location?  One key piece, perhaps, is how many cars and people will go by the store.  This is one small part of the *multitude of metrics* the analytics company [PiinPoint](https://www.piinpoint.com/) delivers to its customers.  However, it turns out that providing traffic counts is a tricky business, so PiinPoint teamed up with [Insight](http://insightdatascience.com/) (and me) to see if we can dig deeper.
 
