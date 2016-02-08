@@ -50,19 +50,17 @@ Due to the incredibly sparse nature of the data, I wanted to see if I could augm
 One obvious relevant data source is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think work-life versus night-life).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
 
 Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the [Google Geocode API](https://developers.google.com/maps/documentation/geocoding/intro) and placed the road types into the following bins:
-<br><br>
+
 <code><p style="color:#6E6E6E"><sub><sup>{highway/route, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</sup></sub></p></code>
 
 Finally, I wanted to try to inform the model about the nearby density of interesting places that might draw traffic.  For this information I turned to [Factual.com](https://factual.com/), who have data on the location and types of places near a given latitude and longitude.  The categories for places are broad at the high level, but sub-categories can be quite specific.  Due to API limits and time constraints I was limited to putting places into two bins.  The first one is more business/services-like places:
-<br><br>
+
 <code><p style="color:#6E6E6E"><sub><sup>{Automotive, Community/Government, Healthcare, Business/Services, Travel}</sup></sub></p></code>
-<br>
 
 The second is a bin for more recreation-like places:
-<br><br>
+
 <code><p style="color:#6E6E6E"><sub><sup>{Retail, Landmarks, Restaurants/Bars, Sports/Rec, Landmarks,
 		  Social, Transportation}</sup></sub></p></code>
-<br>
 
 For both of these bins, I got counts from factual.com within 50, 150, and 300 meters from the location of interest.
 
