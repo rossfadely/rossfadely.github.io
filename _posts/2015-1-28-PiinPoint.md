@@ -33,7 +33,7 @@ When deciding to take this consulting job on as my Insight project, I was initia
 
 Here at Insight (and as Data Scientists) we often want to *move fast*.  Which often translates to: start simple and build up.  A very simple and easy first step to this problem is K-Nearest Neighbors.  The idea is simple: for a given location, find the closest locations (by distance) to the location of interest and estimate the missing measurement (for a given hour) by taking a weighted mean of the K neighbors (where K is something like 1, 2, or 10).  Weights of the K neighbors are determined by inverse distance, and K is set through cross-validation.
 
-Turns out this didn't work so well.  The Root Mean Squared Error (RMSE), was not too much better than what PiinPoint is currently doing (think averaging by hour over a large spatial area).  As you can image the variation of traffic can be immense from place to place, even more so for a dense city (like NYC).  Ultimately, this makes the K neighbors somewhat noisy estimators for the traffic counts.
+Turns out this didn't work so well.  The Root Mean Squared Error (RMSE), was not too much better than what PiinPoint is currently doing (think averaging by hour over a large spatial area).  As you can imagine the variation of traffic can be immense from place to place, even more so for a dense city (like NYC).  Ultimately, this makes the K neighbors somewhat noisy estimators for the traffic counts.
 
 # Building an initial model
 
