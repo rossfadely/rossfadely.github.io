@@ -7,7 +7,7 @@ Suppose you want to open a new store for your business, what kind of information
 
 # The Problem
 
-Estimating pedestrian and vehicle traffic is tough - companies rich in the right data seldom give it out.  Moreover, even those who have it often don't have a complete picture.  To tackle this [PiinPoint](https://www.piinpoint.com) has teamed up with [Miovision](https://miovision.com/) a traffic data company that does spot measurements of people and autos at various locations around the globe.
+Estimating pedestrian and vehicle traffic is tough - companies rich in the right data seldom give it out.  Moreover, even those who have it often don't have a complete picture.  To tackle this problem [PiinPoint](https://www.piinpoint.com) has teamed up with [Miovision](https://miovision.com/) a traffic data company that does spot measurements of people and automobiles at various locations around the globe.
 
 The trick is, it's hard for anyone to provide complete spatial-temporal coverage everywhere around the globe.  In Miovision's case this is also true.  For instance, here is where data has been collected (as of this date) for NYC.
 
@@ -19,13 +19,13 @@ In addition, the above map doesn't paint the full picture.  For a given location
 
 ![_config.yml]({{ site.baseurl }}/images/curves.png)
 
-The above plot shows three random sets of data for six different locations.  The top row shows pedestrian counts and the bottom shows light/medium vehicles (think cars, SUVs, trucks, and vans).  As you can see, even at locations where there are data, it is far from complete.  Some locations do have very nice coverage (like the location on the lower left), while others are much more incomplete.  This is particularly true at the morning hours from midnight to 10 AM.
+The above plot shows Miovision data for six random locations.  The top row shows pedestrian counts and the bottom shows light/medium vehicles (think cars, SUVs, trucks, and vans).  As you can see, even at locations where there are data, it is far from complete.  Some locations do have very nice coverage (like the location on the lower left), while others are much more incomplete.  This is particularly true at the morning hours from midnight to 10 AM.
 
-So what does this mean for our PiinPoint team?
+So what does this mean for the PiinPoint team?  They need a model which provides estimates at times without direct measurements.  
 
 > *GOAL:* At each location, estimate the vehicle and pedestrian traffic for hours with no data.
 
-You can imagine that this might be a tricky task given the heterogeneous nature of the data.  Nevertheless our goal is to improve on their models, as measured by the root mean squared error (RMSE) on held-out test data.
+You can imagine that this might be a tricky task given the heterogeneous nature of the data.  Nevertheless our *goal is to improve on their models, as measured by the root mean squared error (RMSE) on held-out test data*.
 
 # First Attempts
 
