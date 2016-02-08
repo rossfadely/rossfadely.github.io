@@ -74,9 +74,10 @@ The first set of models I considered were based on the [scikit-learn](http://sci
 Next, I considered the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Random_forest).  For both of these, I varied the features and parameters put into the model and used cross-validation to determine the best model.  The table below highlights some of the models explored.
 
 ![_config.yml]({{ site.baseurl }}/images/model_table.png)
-<sub><sup>C = Census data, S = Street type, and F = factual.com place data</sup></sub>
+<sub><sup><p style="color:#6E6E6E">C = Census data, S = Street type, and F = factual.com place data</p></sup></sub>
 
 In addition to the scikit-learn model library, I wanted to explore two other types of models which often perform well for estimation tasks like the one here.
+Specifically I tried Bayesian Additive Regressive Trees (sampled with [Particle Gibbs](http://www.gatsby.ucl.ac.uk/~balaji/pgbart_aistats15.pdf)) and Neural Networks (built with [Keras](http://keras.io/)).  While these models seemed promising
 
 # Perfomance
 
