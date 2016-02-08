@@ -41,7 +41,7 @@ Intuitively, the nearest neighbors to a location must relate in *some* way to th
 
 The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the traffic counts and distances associated with the neighbors as features <code>X</code> to predict the actual traffic counts <code>Y</code>.  Train a good regression algorithm to improve the RMSE.
 
-Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs <code>X</code> and the outcomes <code>Y</code>.  As a first stab, I chose to try the ensemble method [Random Forests](https://en.wikipedia.org/wiki/Random_forest).  Taking this approach proved to be a great improvement over the baseline model from PiinPoint (see *Model Exploration* below).  Using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
+Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs <code>X</code> and the outcomes <code>Y</code>.  As a first stab, I chose to try the ensemble method [Random Forests](https://en.wikipedia.org/wiki/Random_forest).  Taking this approach proved to be a great improvement over the baseline model from PiinPoint (see *Model Exploration* below).  Using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.4 times better than PiinPoint's current approach.
 
 # Further Improvements: Augmenting the data
 
