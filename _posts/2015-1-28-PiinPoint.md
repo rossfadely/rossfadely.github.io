@@ -68,7 +68,7 @@ For both of these bins, I got counts from factual.com within 50, 150, and 300 me
 
 Now armed with a more rich set of data, it was time to explore the space of models that would suit PiinPoint's problem.  The goal for this stage is to produce a model that performs well, but also one that is simple to implement for PiinPoint.  
 
-The first set of models I considered were based on the [scikit-learn](http://scikit-learn.org/stable/) library, since they are stable, work well, and have a consistent API.  For basic comparision purposes I first considered a K nearest neighbors model only.  This performed fairly poorly (see table below), yielding just a 5% improvement over PiinPoint's current model.
+The first set of models I considered were based on the [scikit-learn](http://scikit-learn.org/stable/) library, since they are stable, work well, and have a consistent API.  For basic comparision purposes I first considered a K nearest neighbors model only.  This performed fairly poorly (see table below), yielding just a 5% improvement (for vehicles) over PiinPoint's current model.
 
 Next, I considered the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Random_forest).  For both of these, I varied the features and parameters put into the model and used cross-validation to determine the best model.  The table below highlights some of the models explored.
 
