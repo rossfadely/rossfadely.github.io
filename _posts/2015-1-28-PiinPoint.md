@@ -21,7 +21,7 @@ In addition, the above map doesn't paint the full picture.  For a given location
 
 The above plot shows Miovision data for six random locations.  The top row shows pedestrian counts and the bottom shows light/medium vehicles (think cars, SUVs, trucks, and vans).  As you can see, even at locations where there are data, it is far from complete.  Some locations do have very nice coverage (like the location on the lower left), while others are much more incomplete.  This is particularly true at the morning hours from midnight to 10 AM.
 
-So what does this mean for the PiinPoint team?  They need a model which provides estimates at times without direct measurements.  
+So what does this mean for the PiinPoint team?  They need a model which provides traffic estimates at times without direct measurements.  
 
 > *GOAL:* At each location, estimate the vehicle and pedestrian traffic for hours with no data.
 
@@ -33,19 +33,19 @@ When deciding to take this consulting job on as my Insight project, I was initia
 
 Here at Insight (and as Data Scientists) we often want to *move fast*.  Which often translates to: start simple and build up.  A very simple and easy first step to this problem is K-Nearest Neighbors.  The idea is simple: for a given location, find the closest locations (by distance) to the location of interest and estimate the missing measurement (for a given hour) by taking a weighted mean of the K neighbors (where K is something like 1, 2, or 10).  Weights of the K neighbors are determined by inverse distance, and K is set through cross-validation.
 
-Turns out this didn't work so well.  The Root Mean Squred Error (RMSE), was not too much better than what PiinPoint is currently doing (think averaging by hour over a large spatial area).  As you can image the variation of traffic can be immense from place to place, even moreso for a dense city (like NYC).  Ultimately, this makes the K neighbors somewhat noisy estimators for the traffic counts.
+Turns out this didn't work so well.  The Root Mean Squared Error (RMSE), was not too much better than what PiinPoint is currently doing (think averaging by hour over a large spatial area).  As you can image the variation of traffic can be immense from place to place, even more so for a dense city (like NYC).  Ultimately, this makes the K neighbors somewhat noisy estimators for the traffic counts.
 
 # Building an initial model
 
 Intuitively, the nearest neighbors to a location must relate in *some* way to the traffic density.  However, that relation might be somewhat complicated.  A second intuition is if you are trying to estimate traffic at a given hour (at a particular location), the hours before and after ought to be well correlated with it.  
 
-The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the traffic counts and distances associated with the neighbors as features X to predict the actual traffic counts Y.  Train a good regression algorithm to improve the RMSE.
+The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the traffic counts and distances associated with the neighbors as features <code>X</code> to predict the actual traffic counts <code>Y</code>.  Train a good regression algorithm to improve the RMSE.
 
-Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  As a first stab, I chose to try the ensemble method [Random Forests](https://en.wikipedia.org/wiki/Random_forest).  Taking this approach proved to be a great improvement over the baseline model from PiinPoint (see *Model Exploration* below).  Using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
+Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs <code>X</code> and the outcomes <code>Y</code>.  As a first stab, I chose to try the ensemble method [Random Forests](https://en.wikipedia.org/wiki/Random_forest).  Taking this approach proved to be a great improvement over the baseline model from PiinPoint (see *Model Exploration* below).  Using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
 
 # Further Improvements: Augmenting the data
 
-Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  The motivation for this is simple - the Miovision data is fairly sparse in both space (location) and time, so we want to provide our predictive model additional information to supplement the places were sparsity is the worst.
+Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features <code>X</code> with publicly available data.  The motivation for this is simple - the Miovision data is fairly sparse in both space (location) and time, so we want to provide our predictive model additional information to supplement the places were sparsity is the worst.
 
 One obvious relevant data source is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think work-life versus night-life).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
 
