@@ -37,20 +37,32 @@ Turns out this didn't work so well.  The Root Mean Squred Error (RMSE), was not 
 
 # Building an initial model
 
-Intuitively, the nearest neighbors to a location must relate in *some* way to the traffic density.  However, that relation might be somewhat complicated.  A second intuition is if you are trying to estimate traffic at a given hour (at a particular location), the hours before and after are STRONGLY correlated with it.  
+Intuitively, the nearest neighbors to a location must relate in *some* way to the traffic density.  However, that relation might be somewhat complicated.  A second intuition is if you are trying to estimate traffic at a given hour (at a particular location), the hours before and after ought to be well correlated with it.  
 
-The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the distances to, and the traffic counts associated with, the neighbors as features X to predict the actual traffic counts Y.  Train a good regression algorithm to improve the RMSE.
+The idea is as follows. For a given location-hour pair, compute the K nearest neighbors for the hour and the hours immediately before and after.  Take the traffic counts and distances associated with the neighbors as features X to predict the actual traffic counts Y.  Train a good regression algorithm to improve the RMSE.
 
-Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  Specifically, I chose to try the ensemble methods [Random Forests](https://en.wikipedia.org/wiki/Random_forest) and [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting).  Taking this approach provided the biggest boost in performance of all the approaches I explored (see *Model Exploration* below).  For example, using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
+Tree-based methods are great for this task - they are fairly robust, and can build complex non-linear relations between the inputs X and the outcomes Y.  As a first stab, I chose to try the ensemble method [Random Forests](https://en.wikipedia.org/wiki/Random_forest).  Taking this approach proved to be a great improvement over the baseline model from PiinPoint (see *Model Exploration* below).  Using a Random Forest on the k-neighbor pairs improved the RMSE to about 1.6 times better than PiinPoint's current approach.
 
 # Further Improvements: Augmenting the data
 
 Due to the incredibly sparse nature of the data, I wanted to see if I could augment our features X with publicly available data.  One obvious choice is the US Census.  The intuition is simple - areas with low/higher population ought to correlate with pedestrian and vehicle traffic.  Moreover, the median age of a location might affect traffic patterns (think work-life versus night-life).  Using the Census Tract data, I constructed an interpolation based method of estimating these quantities for any given location.  Once in place, these quantities were computed and added to our features.
 
-Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the [Google Geocode API](https://developers.google.com/maps/documentation/geocoding/intro) and placed the road types into the following bins:<br>
+Next, I had the intuition that the type of street that a location is on might be  important.  Intuitively, highways are likely to have more vehicle traffic than a 'court' or a 'lane'.  The opposite may be true perhaps for pedestrians. So I queried the [Google Geocode API](https://developers.google.com/maps/documentation/geocoding/intro) and placed the road types into the following bins:<br><br>
 <code><sub><sup>{highway/route, street/road/drive, lane/place/court/way/circle, ave/blvd, bridge/tunnel, path/walk/bridge}</sup></sub></code>
 
-Finally, I wanted to try to inform the model about the nearby density of interesting places that might draw traffic.  For this information I turned to [Factual.com](https://factual.com/), who have data on the location and types of places near a given latitude and longitude.  The categories for places are broad at the high level, but sub-categories can be quite specific.  Due to API limits and time constraints I was limited to putting places
+Finally, I wanted to try to inform the model about the nearby density of interesting places that might draw traffic.  For this information I turned to [Factual.com](https://factual.com/), who have data on the location and types of places near a given latitude and longitude.  The categories for places are broad at the high level, but sub-categories can be quite specific.  Due to API limits and time constraints I was limited to putting places into two bins.  The first one is more business/services-like places:
+
+<br><br>
+<code><sub><sup>{Automotive, Community/Government, Healthcare, Business/Services, Travel}</sup></sub></code>
+<br><br>
+
+The second is a bin for more recreation-like places:
+<br><br>
+<code><sub><sup>{Retail, Landmarks, Restaurants/Bars, Sports/Rec, Landmarks,
+		  Social, Transportation}</sup></sub></code>
+<br><br>
+
+For both of these bins, I got counts from factual.com within 50, 150, and 300 meters from the location of interest.
 
 # Perfomance
 
