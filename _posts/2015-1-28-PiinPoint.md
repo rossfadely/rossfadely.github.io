@@ -94,3 +94,8 @@ The panel on the right of the figure shows the best vehicle model (which uses da
 # Wrap up
 
 I really enjoyed the chance to work with PiinPoint and improve the product they deliver to their customers.  Indeed, knowing that these models (done in just a couple weeks) will be integrated into their company is very exciting. The project itself was also rewarding.  Since the data were relatively small and quite sparse, it was fun to explore different models and intuitions of what might work.  My initial thoughts of using more complex and powerful models had to disappear, and instead the dance was one of balance between the nature of the problem and models.  
+
+# Presentation
+
+Below is my presentation for this work at Insight
+<iframe src="https://docs.google.com/presentation/d/1J1fQyNz3SaZiYznXBri7GNnzMwkyapxRbbo2zMbuX-Y/embed?start=false&loop=false&delayms=60000" frameborder="0" width="1365" height="1053" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
