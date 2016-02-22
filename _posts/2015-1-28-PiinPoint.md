@@ -98,4 +98,4 @@ I really enjoyed the chance to work with PiinPoint and improve the product they 
 # Presentation
 
 Below is my presentation for this work at Insight
-<iframe src="https://docs.google.com/presentation/d/1J1fQyNz3SaZiYznXBri7GNnzMwkyapxRbbo2zMbuX-Y/embed?start=false&loop=false&delayms=60000" frameborder="0" width="800" height="600" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://docs.google.com/presentation/d/1J1fQyNz3SaZiYznXBri7GNnzMwkyapxRbbo2zMbuX-Y/embed?start=false&loop=false&delayms=60000" frameborder="0" width="700" height="540" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
